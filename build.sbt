@@ -12,7 +12,7 @@ licenses := Seq("Apache 2.0" -> url("https://raw.githubusercontent.com/amplab/ml
 
 homepage := Some(url("https://github.com/amplab/ml-matrix.git"))
 
-crossScalaVersions := Seq("2.10.4", "2.11.8")
+crossScalaVersions := Seq("2.11.8")
 
 parallelExecution in Test := false
 
