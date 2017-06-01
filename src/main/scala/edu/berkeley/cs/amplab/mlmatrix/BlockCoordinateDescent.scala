@@ -208,6 +208,7 @@ object BlockCoordinateDescent {
       .setMaster(sparkMaster)
       .setAppName("BlockCoordinateDescent")
       .setJars(SparkContext.jarOfClass(this.getClass).toSeq)
+    conf.set("spark.eventLog.enabled", "true") to ‘main’
     val sc = new SparkContext(conf)
 
     val aParts = (0 until numColBlocks).map { p =>
@@ -223,8 +224,9 @@ object BlockCoordinateDescent {
     b.rdd.count
 
     var begin = System.nanoTime()
-    val xs = new BlockCoordinateDescent().solveLeastSquaresWithL2(aParts, b, Array(0.0), numPasses,
-      new NormalEquations()).map(x => x.head)
+    val xs = new BlockCoordinateDescent().solveLeastSquaresWithL2(aParts, b,
+      Array(1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1), 
+      numPasses, new NormalEquations()).map(x => x.head)
     var end = System.nanoTime()
 
     sc.stop()
