@@ -4,6 +4,8 @@ assemblySettings
 
 name := "mlmatrix"
 
+scalaVersion := "2.11.8"
+
 version := "0.2"
 
 organization := "edu.berkeley.cs.amplab"
