@@ -208,7 +208,7 @@ object BlockCoordinateDescent {
       .setMaster(sparkMaster)
       .setAppName("BlockCoordinateDescent")
       .setJars(SparkContext.jarOfClass(this.getClass).toSeq)
-    conf.set("spark.eventLog.enabled", "true") to ‘main’
+    conf.set("spark.eventLog.enabled", "true")
     val sc = new SparkContext(conf)
 
     val aParts = (0 until numColBlocks).map { p =>
