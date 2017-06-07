@@ -190,9 +190,9 @@ class BlockCoordinateDescent extends Logging with Serializable {
 object BlockCoordinateDescent {
 
   def main(args: Array[String]) {
-    if (args.length < 6) {
+    if (args.length < 8) {
       println("Usage: BlockCoordinateDescent <master> <rowsPerBlock> <numRowBlocks> <colsPerBlock>"
-        + " <numColBlocks> <numPasses>")
+        + " <numColBlocks> <numPasses> <numLambda> <numClasses>")
       System.exit(0)
     }
 
@@ -202,7 +202,11 @@ object BlockCoordinateDescent {
     val colsPerBlock = args(3).toInt
     val numColBlocks = args(4).toInt
     val numPasses = args(5).toInt
-    val numClasses = 147 // TODO: hard coded for now
+    // val numClasses = 147 // TODO: hard coded for now
+    val lambda = args(6).toInt
+    val numClasses = args(7).toInt// TODO: hard coded for now
+    val array = Array(1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 10)
+    val newArray = array.take(lambda)
 
     val conf = new SparkConf()
       .setMaster(sparkMaster)
@@ -225,8 +229,7 @@ object BlockCoordinateDescent {
 
     var begin = System.nanoTime()
     val xs = new BlockCoordinateDescent().solveLeastSquaresWithL2(aParts, b,
-      Array(1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1), 
-      numPasses, new NormalEquations()).map(x => x.head)
+      newArray, numPasses, new NormalEquations()).map(x => x.head)
     var end = System.nanoTime()
 
     sc.stop()
